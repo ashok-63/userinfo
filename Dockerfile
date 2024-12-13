@@ -1,21 +1,12 @@
-# Use the official Ubuntu base image
-FROM ubuntu:22.04
-
-# Set working directory
+FROM php:8.1.0-apache
 WORKDIR /var/www/html
+COPY UserInfo2 .
 
-# Install PHP and Apache
+# Mod Rewrite
+RUN a2enmod rewrite
+
+# Linux Library
 RUN apt-get update -y && apt-get install -y \
-    apache2 \
-    php8.1 \
-    php8.1-cli \
-    php8.1-pdo \
-    php8.1-mysql \
-    php8.1-xml \
-    php8.1-mbstring \
-    php8.1-intl \
-    php8.1-gd \
-    php8.1-curl \
     libicu-dev \
     libmariadb-dev \
     unzip zip \
@@ -24,30 +15,15 @@ RUN apt-get update -y && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
-    libpng-dev \
-    curl \
-    git \
-    sudo
+    libpng-dev 
 
-# Enable mod_rewrite for Apache
-RUN a2enmod rewrite
+# Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php8.1 -- --install-dir=/usr/local/bin --filename=composer
+# PHP Extension
+RUN docker-php-ext-install gettext intl pdo_mysql gd
 
-# Copy the application code
-COPY UserInfo2 . 
+RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
-# Set permissions (if required for Apache to access files)
-RUN chown -R www-data:www-data /var/www/html
-
-# Install PHP extensions for GD (Graphics, used in Laravel applications for image handling)
-RUN apt-get install -y libjpeg62-turbo-dev libfreetype6-dev libpng-dev \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-jpeg-dir=/usr/include \
-    && docker-php-ext-install gd
-
-# Expose Apache port
-EXPOSE 80
-
-# Run Apache in the foreground
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+CMD [ "php","-S", "0.0.0.0:80"]
