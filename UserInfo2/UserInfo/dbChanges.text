@@ -1,0 +1,88 @@
+30/05/2023
+=================
+ALTER TABLE `userpermissionmaster` ADD `OTPmaster` TINYINT(2) NOT NULL DEFAULT '0' AFTER `ReactReq`;
+
+
+27/10/2023
+=======================
+CREATE TABLE `installinfo`.`releaseliclog` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `indatetime` DATETIME,
+  `licNo` VARCHAR(45),
+  `instCode` VARCHAR(45),
+  `InstDate` DATE,
+  `CustName` VARCHAR(255),
+  `CustMobile` VARCHAR(45),
+  `UserInfoLogin` VARCHAR(45),
+  PRIMARY KEY(`id`),
+  INDEX `Index_2`(`licNo`)
+)
+ENGINE = InnoDB;
+
+ALTER TABLE `userinfologin`.`userpermissionmaster` ADD COLUMN `ConvertLic` TINYINT(2) UNSIGNED NOT NULL DEFAULT 0 AFTER `UserPermission`;
+
+ALTER TABLE `installinfo`.`releaseliclog` ADD COLUMN `Source` VARCHAR(2) AFTER `UserInfoLogin`;
+
+===================================================================
+
+30/10/2023
+=====================================================================
+CREATE TABLE `installinfo`.`convertliclog` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `licNo` VARCHAR(20),
+  `inDateTime` DATETIME,
+  `reason` VARCHAR(255),
+  `userinfoLogin` VARCHAR(45) COMMENT 'Logged In Username',
+  PRIMARY KEY(`id`),
+  INDEX `Index_2`(`licNo`)
+)
+ENGINE = InnoDB;
+ALTER TABLE `installinfo`.`convertliclog` ADD COLUMN `Source` VARCHAR(2) AFTER `UserInfoLogin`;
+ALTER TABLE `installinfo`.`convertliclog` ADD COLUMN `CorpId` VARCHAR(25) AFTER `Source`;
+
+
+=============================================================================
+22/11/2023
+
+ALTER TABLE `userinfologin`.`userpermissionmaster` MODIFY COLUMN `SalesEnq` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `SendEmail` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `SendSms` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `SuppWMS` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `NewAct` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `DlrReg` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `ForSales` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `DlrActCount` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `MyAct` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `TechSupportNo` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `RnwWMS` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `ReactEmail` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `ReactReq` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `DlrScore` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `OnlinePurchasePDF` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `PriceList` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `PndReq` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `AndroidAct` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `Articles` TINYINT(2) NOT NULL DEFAULT 1,
+ MODIFY COLUMN `ScratchKeys` TINYINT(2) NOT NULL DEFAULT 0,
+ MODIFY COLUMN `ConvertLic` TINYINT(2) NOT NULL DEFAULT 0,
+ ADD COLUMN `cloudbkpKey` TINYINT(2) NOT NULL DEFAULT 1 AFTER `ConvertLic`;
+
+
+
+http://localhost/UserInfo/updateDefaultVals
+
+===========================================================================================
+08/01/20234
+
+ALTER TABLE `location`.`city_master` ADD COLUMN `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT AFTER `City_Name`,
+ ADD PRIMARY KEY(`id`),
+ ADD INDEX `Index_2`(`City_Name`),
+ ADD INDEX `Index_3`(`District_Name`),
+ ADD INDEX `Index_4`(`stID`);
+
+
+
+
+ALTER TABLE `location`.`state_master` MODIFY COLUMN `stID` INTEGER NOT NULL AUTO_INCREMENT,
+ ADD PRIMARY KEY(`stID`),
+ ADD INDEX `Index_2`(`st_Name`);

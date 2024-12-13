@@ -1,0 +1,25 @@
+New Requirements By Trunal D sir on 23/01/2023
+
+1.after click on HW2 button - to view hardware details - must be open in new tab
+2.key search by mail and mobile number is too slow to loading
+3. need key suggestion when type a key
+4. want to search key details after press enter button
+
+===================================
+11/03/2024
+Requirements By Preeti mam
+1. remove image seperator from key details record only show at last
+2. remove marquee tag and fix notes on side panel
+
+====================================
+15/03/2024
+Sure Block ||
+req by preeti mam on 15/03/2024 |
+once reactivation is allowed then insert key in sureucblock table to block uc immediately
+
+=====================================
+18/03/2024
+req by preeti mam
+highlight latest uc as well 
+
+
