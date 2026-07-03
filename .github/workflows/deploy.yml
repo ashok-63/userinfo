@@ -5,20 +5,34 @@ on:
     branches:
       - NP_Main
 
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: self-hosted
+
+    env:
+      KUBECONFIG: C:\Users\admin\.kube\config
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Verify Cluster
+      - name: Verify Runner
         shell: powershell
         run: |
+          Write-Host "Runner: $env:COMPUTERNAME"
+          Write-Host "User: $env:USERNAME"
+          Write-Host "KUBECONFIG: $env:KUBECONFIG"
+
+      - name: Verify kubectl
+        shell: powershell
+        run: |
+          kubectl version --client
+          kubectl config current-context
           kubectl get nodes
 
-      - name: Apply Manifest
+      - name: Apply Kubernetes Manifest
         shell: powershell
         run: |
           kubectl apply -f aks/app.yml
@@ -31,9 +45,11 @@ jobs:
       - name: Wait for Rollout
         shell: powershell
         run: |
-          kubectl rollout status deployment/userinfo-deployment
+          kubectl rollout status deployment/userinfo-deployment --timeout=180s
 
-      - name: Verify Service
+      - name: Verify Deployment
         shell: powershell
         run: |
+          kubectl get deployments
+          kubectl get pods
           kubectl get svc
