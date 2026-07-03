@@ -1,0 +1,34 @@
+name: Deploy to Floci AKS
+
+on:
+  push:
+    branches:
+      - main   # Change to your branch if different
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Verify Cluster
+        shell: powershell
+        run: |
+          kubectl get nodes
+
+      - name: Deploy
+        shell: powershell
+        run: |
+          kubectl apply -f aks/app.yml
+
+      - name: Restart Deployment
+        shell: powershell
+        run: |
+          kubectl rollout restart deployment/userinfo-deployment
+
+      - name: Wait for Rollout
+        shell: powershell
+        run: |
+          kubectl rollout status deployment/userinfo-deployment
