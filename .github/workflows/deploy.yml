@@ -3,7 +3,7 @@ name: Deploy to Floci AKS
 on:
   push:
     branches:
-      - main   # Change to your branch if different
+      - NP_Main
 
 jobs:
   deploy:
@@ -18,7 +18,7 @@ jobs:
         run: |
           kubectl get nodes
 
-      - name: Deploy
+      - name: Apply Manifest
         shell: powershell
         run: |
           kubectl apply -f aks/app.yml
@@ -32,3 +32,8 @@ jobs:
         shell: powershell
         run: |
           kubectl rollout status deployment/userinfo-deployment
+
+      - name: Verify Service
+        shell: powershell
+        run: |
+          kubectl get svc
